@@ -30,7 +30,7 @@ const AddFood = () => {
     formData.append('file', image);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/foods', formData, {
+      const response = await axios.post('http://localhost:8081/api/foods/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -48,7 +48,7 @@ const AddFood = () => {
       }
     } catch (err) {
       console.log("Error", err);
-      alert("Error adding food");
+      alert(err?.response?.data?.message || "Error adding foods");
     }
   };
 
