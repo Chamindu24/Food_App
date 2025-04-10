@@ -23,4 +23,13 @@ public class CloudinaryClient {
         ));
         return uploadResult.get("secure_url").toString();
     }
+
+    public boolean deleteFile(String filename) {
+        try {
+            cloudinary.uploader().destroy(filename, ObjectUtils.asMap("resource_type", "image"));
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete file", e);
+        }
+    }
 }

@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +46,46 @@ public class FoodServiseImpl implements FoodService {
         newFoodEntity.setImageUrl(imageUrl);
         newFoodEntity = foodRepository.save(newFoodEntity);
         return convertToResponse(newFoodEntity);
+    }
+
+    @Override
+    public List<FoodResponse> readFoods() {
+        List<FoodEntity> databaseEntities = foodRepository.findAll();
+        return databaseEntities.stream().map(object -> convertToResponse(object)).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public FoodResponse readFood(String id) {
+        FoodEntity exitingFood = foodRepository.findById(id).orElseThrow(() -> new RuntimeException("Food not found for id: " + id));
+        return convertToResponse(exitingFood);
+
+    }
+
+    @Override
+    public boolean deleteFile(String filename) {
+        try {
+            // Assuming CloudinaryClient has a deleteFile method
+            return cloudinaryClient.deleteFile(filename);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete file: " + filename, e);
+        }
+    }
+
+    @Override
+    public void deleteFood(String id) {
+        FoodEntity foodEntity = foodRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Food not found with id: " + id));
+
+        String imageUrl = foodEntity.getImageUrl();
+        String fileName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.lastIndexOf(".")); // Remove extension
+        boolean isDeleted = deleteFile(fileName);
+
+        if (isDeleted) {
+            foodRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Failed to delete file from Cloudinary");
+        }
     }
 
     private FoodEntity converToEntity(FoodRequest request) {
