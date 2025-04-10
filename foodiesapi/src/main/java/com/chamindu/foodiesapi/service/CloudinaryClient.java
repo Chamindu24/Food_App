@@ -1,0 +1,27 @@
+package com.chamindu.foodiesapi.service;
+import com.chamindu.foodiesapi.config.CloudinaryConfig;
+import com.cloudinary.*;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Map;
+
+@Component
+@RequiredArgsConstructor
+public class CloudinaryClient {
+
+    private final Cloudinary cloudinary;
+
+    public String uploadFile(MultipartFile file, String fileName) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "public_id", fileName,
+                "overwrite", true,
+                "resource_type", "image"
+        ));
+        return uploadResult.get("secure_url").toString();
+    }
+}
