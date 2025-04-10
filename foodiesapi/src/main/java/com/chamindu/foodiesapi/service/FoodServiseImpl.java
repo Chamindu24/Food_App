@@ -5,14 +5,21 @@ import com.chamindu.foodiesapi.io.FoodRequest;
 import com.chamindu.foodiesapi.io.FoodResponse;
 import com.chamindu.foodiesapi.repository.FoodRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Builder
+
 public class FoodServiseImpl implements FoodService {
 
     private final CloudinaryClient cloudinaryClient;

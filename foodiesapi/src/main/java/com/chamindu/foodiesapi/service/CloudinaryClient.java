@@ -1,7 +1,6 @@
 package com.chamindu.foodiesapi.service;
 import com.chamindu.foodiesapi.config.CloudinaryConfig;
 import com.cloudinary.*;
-import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
