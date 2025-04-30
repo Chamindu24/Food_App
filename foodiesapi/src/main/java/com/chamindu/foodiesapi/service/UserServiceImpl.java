@@ -1,0 +1,38 @@
+package com.chamindu.foodiesapi.service;
+
+import com.chamindu.foodiesapi.entity.UserEntity;
+import com.chamindu.foodiesapi.io.UserRequest;
+import com.chamindu.foodiesapi.io.UserResponse;
+import com.chamindu.foodiesapi.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class UserServiceImpl implements  UserService{
+
+    private final UserRepository userRepository;
+    @Override
+    public UserResponse registerUser(UserRequest request) {
+        UserEntity newUser = convertToEntity(request);
+        newUser = userRepository.save(newUser);
+        return convertToResponse(newUser);
+    }
+
+    private UserEntity convertToEntity(UserRequest request){
+         return UserEntity.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .name(request.getName())
+                .build();
+
+    }
+
+    private UserResponse convertToResponse(UserEntity registeredUser) {
+        return UserResponse.builder()
+                .id(registeredUser.getId())
+                .name(registeredUser.getName())
+                .email(registeredUser.getEmail())
+                .build();
+    }
+}
