@@ -1,12 +1,13 @@
 package com.chamindu.foodiesapi.controller;
 
+import com.chamindu.foodiesapi.io.CartRequest;
+import com.chamindu.foodiesapi.io.CartResponse;
 import com.chamindu.foodiesapi.service.CartService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -16,12 +17,32 @@ import java.util.Map;
 public class CartController {
     private final CartService cartService;
     @PostMapping
-    public ResponseEntity<?> addToCart(@RequestBody Map<String, String> request) {
-        String foodId = request.get("foodId");
+    public CartResponse addToCart(@RequestBody CartRequest request) {
+        String foodId = request.getFoodId();
         if (foodId == null || foodId.isEmpty()) {
-            return ResponseEntity.badRequest().body("Food ID is required");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Food ID must not be null or empty");
         }
-        cartService.addToCart(foodId);
-        return ResponseEntity.ok("Food item added to cart successfully");
+        return cartService.addToCart(request);
+
+    }
+
+    @GetMapping
+    public  CartResponse getCart(){
+        return cartService.getCart();
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearCart() {
+        cartService.clearCart();
+    }
+
+    @PostMapping("/remove")
+    public CartResponse removeFromCart(@RequestBody CartRequest request) {
+        String foodId = request.getFoodId();
+        if (foodId == null || foodId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Food ID must not be null or empty");
+        }
+        return cartService.removeFromCart(request);
     }
 }
