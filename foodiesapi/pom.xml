@@ -90,9 +90,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.razorpay</groupId>
-			<artifactId>razorpay-java</artifactId>
-			<version>1.4.4</version>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>29.3.0</version>
 		</dependency>
 
 	</dependencies>

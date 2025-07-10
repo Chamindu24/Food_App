@@ -14,6 +14,8 @@ public class OrderResponse {
     private String email;
     private double amount;
     private String paymentStatus;
-    private String razorpayOrderId;
+    private String stripePaymentIntentId;
+    private String clientSecret;
     private String orderStatus;
+    private List<OrderItem> orderedItems;
 }
