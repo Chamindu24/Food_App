@@ -18,7 +18,7 @@
 	<description>Spring Boot REST API for the online food delivery</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
